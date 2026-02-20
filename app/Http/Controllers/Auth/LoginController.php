@@ -13,17 +13,17 @@ class LoginController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $form = $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string',
-            'remember_me' => 'boolean'
+            'password' => 'required|string'
         ], [], [
             'email' => 'ایمیل',
             'password' => 'کلمه عبور'
         ]);
 
-        $remember_me = isset($form['remember_me']) ? $form['remember_me'] : false;
-        if (Auth::attempt(['email' => $form['email'], 'password' => $form['password']], $remember_me)) {
+        $remember = $request->get('remember', false);
+        if (Auth::attempt($credentials, (bool)$remember)) {
+            $request->session()->regenerate();
             return redirect()->intended(route('dashboard'));
         }
 
