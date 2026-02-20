@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', DashboardController::class)->name('dashboard')->middleware('auth');
+    Route::get('/', DashboardController::class)->name('dashboard');
 
-    Route::get('/logout', LogoutController::class);
+    Route::get('/logout', LogoutController::class)->name('logout');
 });
 
 Route::middleware('guest')->group(function () {
